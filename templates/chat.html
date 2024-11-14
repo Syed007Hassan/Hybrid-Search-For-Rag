@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Product Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #ai-response {
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        #product-grid > div {
+            animation: slideIn 0.6s ease forwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #product-grid > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 255, 127, 0.3);
+        }
+
+        #product-grid img {
+            transition: transform 0.3s ease;
+        }
+
+        #product-grid img:hover {
+            transform: scale(1.07);
+        }
+
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top: 4px solid #00ff00;
+            width: 36px;
+            height: 36px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-b from-gray-800 to-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-6">
+
+    <h1 class="text-4xl font-extrabold text-green-400 mb-12">Postgres Hybrid Search</h1>
+
+    <div class="w-full max-w-2xl mb-10">
+        <div class="relative">
+            <input id="search-input" type="text"
+                class="w-full py-4 px-6 rounded-full bg-gray-800 text-lg text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-green-500 focus:border-green-500"
+                placeholder="Search for products...">
+            <button id="search-button"
+                class="absolute right-0 top-2 mr-3 bg-green-600 hover:bg-green-500 text-white rounded-full p-3">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 1 0-14 0 7 7 0 0 0 14 0z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="ai-response" class="w-full max-w-2xl mb-10 text-center text-lg text-green-400 leading-relaxed">
+    </div>
+
+    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const aiResponse = document.getElementById('ai-response');
+        const productGrid = document.getElementById('product-grid');
+
+        searchButton.addEventListener('click', async () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                aiResponse.innerHTML = '<div class="loader mx-auto"></div>';
+                productGrid.innerHTML = '';
+
+                await fetchAIResponse(query);
+            }
+        });
+
+        async function fetchAIResponse(query) {
+            try {
+                const response = await axios.post('/chat', {
+                    query: query
+                });
+
+                if (response.status === 200 && response.data) {
+                    const aiText = response.data.response;
+                    const products = response.data.product_recommendations || [];
+
+                    aiResponse.textContent = aiText;
+
+                    products.forEach(product => {
+                        const productCard = document.createElement('div');
+                        productCard.className = 'bg-gray-800 p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition-all duration-300';
+                        productCard.innerHTML = `
+                            <img src="https://picsum.photos/200/300?random=${product.id}" alt="${product.name}" class="w-full h-40 object-cover rounded-md mb-4">
+                            <h3 class="text-lg font-semibold mb-3">${product.name}</h3>
+                            <p class="text-gray-400 text-sm mb-2">${product.description}</p>
+                            <p class="text-green-400 font-bold mb-2">${product.price} ${product.currency}</p>
+                            <p class="text-yellow-400 font-semibold mb-2">Rating: ${product.rating}/5</p>
+                            <p class="text-sm text-gray-400">Category: ${product.category}</p>
+                            <p class="text-sm text-gray-400">Age Group: ${product.age_group}</p>
+                        `;
+                        productGrid.appendChild(productCard);
+                    });
+                } else {
+                    aiResponse.textContent = "No response found. Please try again.";
+                }
+            } catch (error) {
+                aiResponse.textContent = "Error fetching data. Please try again later.";
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>
