@@ -2,21 +2,11 @@
     This module contains SQLAlchemy model for the product data model.
 """
 
-# pylint:disable=missing-class-docstring,missing-function-docstring
-
 from __future__ import annotations
 import datetime
 
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Index
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    DateTime,
-    ARRAY,
-    Text,
-)
+from sqlalchemy import Index, Column, Integer, String, DateTime, ARRAY, Text
 
 from models.database import engine
 from models import Base
@@ -74,7 +64,8 @@ index_ada002 = Index(
     Product.embedding,
     postgresql_using="hnsw",
     postgresql_with={"m": 16, "ef_construction": 64},
-    postgresql_ops={"embedding_ada002": "vector_ip_ops"},
+    postgresql_ops={"embedding": "vector_l2_ops"},
 )
 
+# Just create tables
 Base.metadata.create_all(engine)

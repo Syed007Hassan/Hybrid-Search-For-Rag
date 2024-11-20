@@ -97,14 +97,17 @@ class PostgresSearcher:
         """
 
         if query_text is not None and len(query_vector) > 0:
+            print(hybrid_query)
             sql = text(hybrid_query).columns(
                 column("id", Integer), column("score", Float)
             )
         elif len(query_vector) > 0:
+            print(vector_query)
             sql = text(vector_query).columns(
                 column("id", Integer), column("rank", Integer)
             )
         elif query_text is not None:
+            print(fulltext_query)
             sql = text(fulltext_query).columns(
                 column("id", Integer), column("rank", Integer)
             )

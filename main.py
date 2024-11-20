@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 logger.info("This is an info message.")
 
-app = FastAPI(title="Hybrid Search with Postgres", version="1.0", debug=True)
+app = FastAPI(title="Hybrid Search with Postgres", debug=True)
 
 app.add_middleware(
     CORSMiddleware,
