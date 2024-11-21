@@ -1,0 +1,109 @@
+{
+  "companies": [
+    {
+      "name": "TechVision Solutions",
+      "description": "Leading provider of AI and machine learning solutions for enterprise businesses. Specializing in predictive analytics and automation systems.",
+      "industry": "Technology",
+      "size": "500-1000",
+      "location": "San Francisco, CA"
+    },
+    {
+      "name": "GreenEarth Renewables",
+      "description": "Sustainable energy company focused on solar and wind power solutions. Developing innovative clean energy technologies for residential and commercial use.",
+      "industry": "Renewable Energy",
+      "size": "1000-5000",
+      "location": "Austin, TX"
+    },
+    {
+      "name": "HealthPlus Medical",
+      "description": "Healthcare technology company developing telemedicine platforms and digital health solutions. Revolutionizing patient care through innovative technology.",
+      "industry": "Healthcare Technology",
+      "size": "100-500",
+      "location": "Boston, MA"
+    },
+    {
+      "name": "Global Finance Corp",
+      "description": "International financial services provider offering investment banking, wealth management, and corporate advisory services.",
+      "industry": "Financial Services",
+      "size": "5000+",
+      "location": "New York, NY"
+    },
+    {
+      "name": "EcoFresh Foods",
+      "description": "Organic food production and distribution company. Specializing in sustainable farming practices and farm-to-table supply chains.",
+      "industry": "Agriculture & Food",
+      "size": "1000-5000",
+      "location": "Portland, OR"
+    },
+    {
+      "name": "SmartHome Systems",
+      "description": "IoT company developing smart home automation solutions. Creating connected devices for security, comfort, and energy efficiency.",
+      "industry": "Technology",
+      "size": "100-500",
+      "location": "Seattle, WA"
+    },
+    {
+      "name": "BuildRight Construction",
+      "description": "Commercial construction company specializing in sustainable building practices and green infrastructure development.",
+      "industry": "Construction",
+      "size": "1000-5000",
+      "location": "Denver, CO"
+    },
+    {
+      "name": "DataSecure Solutions",
+      "description": "Cybersecurity firm providing enterprise-level security solutions and consulting services. Experts in threat detection and prevention.",
+      "industry": "Technology",
+      "size": "500-1000",
+      "location": "Austin, TX"
+    },
+    {
+      "name": "ModernEdu Tech",
+      "description": "Educational technology company developing digital learning platforms and interactive content for K-12 and higher education.",
+      "industry": "Education Technology",
+      "size": "100-500",
+      "location": "Chicago, IL"
+    },
+    {
+      "name": "BioTech Innovations",
+      "description": "Biotechnology research company focused on developing new pharmaceutical solutions and genetic engineering technologies.",
+      "industry": "Biotechnology",
+      "size": "500-1000",
+      "location": "San Diego, CA"
+    },
+    {
+      "name": "CloudScale Systems",
+      "description": "Cloud computing and infrastructure company providing scalable solutions for enterprise clients. Specialists in cloud migration and optimization.",
+      "industry": "Technology",
+      "size": "1000-5000",
+      "location": "Seattle, WA"
+    },
+    {
+      "name": "AutoDrive Motors",
+      "description": "Electric vehicle manufacturer developing sustainable transportation solutions with advanced autonomous driving capabilities.",
+      "industry": "Automotive",
+      "size": "5000+",
+      "location": "Detroit, MI"
+    },
+    {
+      "name": "RetailTech Solutions",
+      "description": "Retail technology company providing point-of-sale systems and inventory management solutions for brick-and-mortar stores.",
+      "industry": "Retail Technology",
+      "size": "100-500",
+      "location": "Atlanta, GA"
+    },
+    {
+      "name": "MediaMax Digital",
+      "description": "Digital marketing agency specializing in social media marketing, content creation, and brand development strategies.",
+      "industry": "Marketing",
+      "size": "100-500",
+      "location": "Los Angeles, CA"
+    },
+    {
+      "name": "LogisticsPro International",
+      "description": "Global logistics and supply chain management company offering end-to-end solutions for international shipping and distribution.",
+      "industry": "Logistics",
+      "size": "1000-5000",
+      "location": "Miami, FL"
+    }
+  ]
+} 

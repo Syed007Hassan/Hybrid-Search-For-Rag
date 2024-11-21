@@ -8,20 +8,20 @@ from groq import Groq
 
 from services.postgres_searcher import PostgresSearcher
 from config.main import config
-from models.product import Product
+from models.company import Company
 
 logger = logging.getLogger(__name__)
 
 PROMPT = """
-You are a customer service representative for an online store.
-You provide an overview of the products found based on the search query.
-You never tell about the products themselves, only the summary like: `I found 3 products with various sizes and colors for your kid.`
-You must use tool `search_products` to search for products based on the search query.
+You are a company search assistant.
+You provide an overview of the companies found based on the search query.
+You just tell about the companies names, ranks them in order of relevance to the search query.
+You must use tool `search_companies` to search for companies based on the search query.
 
 - Always output well formatted markdown text.
-- Use the `search_products` tool to search for products based on the search query.
-- Keep your answers concise and to the point. Don't overwhelm the user with too much information.
-- Your answer must always show a two liner summary of all the products found.
+- Use the `search_companies` tool to search for companies based on the search query.
+- Keep your answers concise and to the point.
+- Your answer must always show a two liner summary of all the companies found.
 """
 
 
@@ -33,23 +33,23 @@ class ChatService:
     def __init__(self):
         self.client = Groq(api_key=config.GROQ_API_KEY)
         self.model = "llama3-groq-70b-8192-tool-use-preview"
-        self.searcher = PostgresSearcher(Product)
+        self.searcher = PostgresSearcher(Company)
 
-    def search_products(self, search_query: str):
+    def search_companies(self, search_query: str):
         """
-        This function is used to search products based on the search_query.
+        This function is used to search companies based on the search_query.
         """
-        product_recommendations = []
-        response: list[Product] = self.searcher.search_and_embed(search_query)
-        product_recommendations.extend(response)
+        company_recommendations = []
+        response: list[Company] = self.searcher.search_and_embed(search_query)
+        company_recommendations.extend(response)
         if not response:
-            return "No products found for the given search query."
+            return "No companies found for the given search query."
         response = "\n".join([i.content for i in response])
 
         return (
-            "Retrieved the following products based on your search query:\n"
+            "Retrieved the following companies based on your search query:\n"
             f"{response}"
-        ), product_recommendations
+        ), company_recommendations
 
     def search_tool_definition(self):
         """
@@ -58,17 +58,17 @@ class ChatService:
         return {
             "type": "function",
             "function": {
-                "name": "search_products",
-                "description": "This function is used to search products based on the search_query.",
+                "name": "search_companies",
+                "description": "This function is used to search companies based on the search_query.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "search_query": {
                             "type": "string",
                             "description": (
-                                "The search query to search the products.\n"
-                                "eg: 'shoes for kids with size 5' or "
-                                "summer wear for kids"
+                                "The search query to search the companies.\n"
+                                "eg: 'tech companies in San Francisco' or "
+                                "'large manufacturing companies'"
                             ),
                         },
                     },
@@ -85,7 +85,7 @@ class ChatService:
             {"role": "system", "content": PROMPT},
             {"role": "user", "content": user_query},
         ]
-        product_recommendations = []
+        company_recommendations = []
         while True:
             response = self.client.chat.completions.create(
                 model=self.model,
@@ -114,7 +114,7 @@ class ChatService:
                     tool_name = tool_call.function.name
                     tool_args = json.loads(tool_call.function.arguments)
                     logger.info("Tool arguments: %s", tool_args)
-                    tool_result, product_recommendations = self.search_products(
+                    tool_result, company_recommendations = self.search_companies(
                         **tool_args
                     )
                 except Exception as e:  # pylint: disable=broad-except
@@ -132,4 +132,4 @@ class ChatService:
             else:
                 break
 
-        return response_message.content, product_recommendations
+        return response_message.content, company_recommendations
